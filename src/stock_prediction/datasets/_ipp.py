@@ -74,6 +74,6 @@ def get_ipp():
 
     df = set_date_from_monthcode(df)
 
-    data = data.set_index("date")
+    df = df.set_index("date")
 
     return df
