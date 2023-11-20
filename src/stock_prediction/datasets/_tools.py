@@ -6,11 +6,11 @@ from unidecode import unidecode
 
 
 def set_date_from_monthcode(df):
-    if df.index.name == 'month_code':
+    if df.index.name == "month_code":
         df = df.reset_index()
-    if 'month_code' not in df.columns:
+    if "month_code" not in df.columns:
         raise ValueError("'month_code' not found in columns.")
-    
+
     df["year"] = df.reset_index()["month_code"].str[:4].astype(int)
     df["month"] = df.reset_index()["month_code"].str[4:6].astype(int)
     df["date"] = df.apply(
@@ -21,8 +21,14 @@ def set_date_from_monthcode(df):
     df = df[["date"] + [x for x in df.columns if x != "date"]]
     return df
 
-def format_sidra_result(data_raw,  columns_mapping = None, values_mapping = None, pivot_columns = None, freq = "monthly"):
 
+def format_sidra_result(
+    data_raw,
+    columns_mapping=None,
+    values_mapping=None,
+    pivot_columns=None,
+    freq="monthly",
+):
     periods = {
         "monthly": "month_code",
         "daily": "day_code",
@@ -32,7 +38,7 @@ def format_sidra_result(data_raw,  columns_mapping = None, values_mapping = None
 
     value_column = "Valor"
     period_column = periods[freq]
-    
+
     data = data_raw.iloc[1:]
     data.columns = data_raw.iloc[0]
 
@@ -47,7 +53,6 @@ def format_sidra_result(data_raw,  columns_mapping = None, values_mapping = None
 
         if period_column in columns_mapping:
             period_column = columns_mapping[period_column]
-            
 
     if values_mapping:
         for col in values_mapping:
@@ -57,7 +62,7 @@ def format_sidra_result(data_raw,  columns_mapping = None, values_mapping = None
         data = data.pivot_table(
             values=value_column, index=period_column, columns=pivot_columns
         )
-    
+
     return data
 
 
@@ -68,10 +73,8 @@ def _to_number(x):
         return np.nan
 
 
-
 def normalize_column_name(column_name):
     column_name = unidecode(column_name.lower())
-    column_name = column_name.replace(' ', '_')
-    column_name = ''.join(c if c.isalnum() or c == '_' else '' for c in column_name)
+    column_name = column_name.replace(" ", "_")
+    column_name = "".join(c if c.isalnum() or c == "_" else "" for c in column_name)
     return column_name
-    
