@@ -1,0 +1,23 @@
+FROM jupyter/minimal-notebook
+
+WORKDIR /app
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK=on
+
+COPY ./src ./src
+COPY ./notebooks ./notebooks
+COPY ./README.md ./
+COPY ./LICENSE.txt ./
+COPY ./pyproject.toml ./
+
+USER root
+RUN chown -R jovyan:users /app
+USER jovyan
+
+RUN pip install .
+
+EXPOSE 8888
+
+VOLUME /app
+
+CMD ["start-notebook.sh", "--NotebookApp.token=''", "--NotebookApp.password=''", "--NotebookApp.default_url='/lab/tree'", "--notebook-dir=/app/notebooks"]

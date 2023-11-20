@@ -1,0 +1,94 @@
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stock_prediction"
+description = "Prediction of stock market"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE.txt"}
+keywords = ["sample", "setuptools", "development"]
+authors = [
+  {name = "Eduardo Morais", email = "emdemor415@gmail.com" }
+]
+maintainers = [
+  {name = "Eduardo Morais", email = "emdemor415@gmail.com" }
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3 :: Only",
+]
+dynamic = ["version"]
+dependencies = [
+  "python-dotenv==1.0.0",
+  "pydantic==2.1.1",
+  "pydantic-settings==2.0.2",
+  "pandas==2.0.3",
+  "scikit-learn==1.3.0",
+  "scipy==1.11.1",
+  "matplotlib==3.7.2",
+  "loguru==0.7.2",
+  "xlrd>=2.0.1",
+  "sidrapy==0.1.4",
+  "unidecode==1.3.7"
+]
+
+[project.urls]
+"Homepage" = "https://emdemor.github.io"
+
+[project.optional-dependencies]
+lint = [
+    "black==23.7.0",
+    "flake8==6.1.0",
+    "Flake8-pyproject==1.2.3",
+    "mypy==1.4.1",
+    "bandit==1.7.5",
+]
+test = [
+    "pytest==7.4.0",
+    "pytest-cov==4.1.0",
+    "pytest-mock==3.11.1",
+    "pytest-mypy==0.10.3",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "stock_prediction.__version__"}
+
+[project.scripts]
+stockpred = "stock_prediction.__main__:main"
+anothermodule = "anothermodule:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"stock_prediction.submodule.assets" = ["*.txt"]
+"anothermodule" = ["*.txt"]
+
+[tool.mypy]
+cache_dir = "/tmp/mypy_cache"
+ignore_missing_imports = true
+
+[tool.flake8]
+max-line-length = 120
+ignore = ["D203", "W504"]
+per-file-ignores = ["sample/module.py:E501"]
+
+[tool.back]
+target-version = ["py311"]
+line-length = 120
+extend-ignore = ["D203", "W504"]
+
+[tool.pytest.ini_options]
+addopts = "-p no:cacheprovider -vvv --durations=0 --disable-warnings --cov --cov-report term-missing"
