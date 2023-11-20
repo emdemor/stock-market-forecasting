@@ -68,4 +68,6 @@ def get_pib():
 
     pib = set_date_from_quartercode(pib)
 
+    data = data.set_index("date")
+
     return pib_setores.merge(pib, how="outer", on="date")

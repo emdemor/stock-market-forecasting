@@ -56,4 +56,6 @@ def get_m2_cost():
     
     data.columns = list(data.columns)
 
+    data = data.set_index("date")
+
     return data

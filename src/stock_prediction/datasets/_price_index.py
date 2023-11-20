@@ -76,4 +76,7 @@ def _format_price_index(filepath, index_name):
         axis=1,
     )
     df = df[["date"] + list(replaces.values())]
+
+    data = data.set_index("date")
+    
     return df
