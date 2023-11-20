@@ -53,5 +53,7 @@ def get_m2_cost():
 
     for col in index_columns:
         data[col] = np.where(data["date"] < datetime(2012, 9, 1), np.nan, data[col])
+    
+    data.columns = list(data.columns)
 
     return data
