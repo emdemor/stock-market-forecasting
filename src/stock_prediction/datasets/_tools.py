@@ -99,4 +99,7 @@ def normalize_column_name(column_name):
     column_name = unidecode(column_name.lower())
     column_name = column_name.replace(" ", "_")
     column_name = "".join(c if c.isalnum() or c == "_" else "" for c in column_name)
-    return column_name.replace("__", "_")
+    column_name = column_name.replace("__", "_")
+    while (not column_name[0].isalpha()) and len(column_name) > 1:
+        column_name = column_name[1:]
+    return column_name
