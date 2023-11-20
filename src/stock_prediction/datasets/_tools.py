@@ -11,13 +11,35 @@ def set_date_from_monthcode(df):
     if "month_code" not in df.columns:
         raise ValueError("'month_code' not found in columns.")
 
-    df["year"] = df.reset_index()["month_code"].str[:4].astype(int)
-    df["month"] = df.reset_index()["month_code"].str[4:6].astype(int)
+    df["year"] = df["month_code"].str[:4].astype(int)
+    df["month"] = df["month_code"].str[4:6].astype(int)
     df["date"] = df.apply(
         lambda row: datetime(row["year"], row["month"], 1) + pd.offsets.MonthEnd(0),
         axis=1,
     )
     df = df.drop(columns=["year", "month", "month_code"])
+    df = df[["date"] + [x for x in df.columns if x != "date"]]
+    return df
+
+
+def set_date_from_quartercode(df):
+    quarter_mapping = [3, 6, 9, 12]
+
+    if df.index.name == "quarter_code":
+        df = df.reset_index()
+    if "quarter_code" not in df.columns:
+        raise ValueError("'quarter_code' not found in columns.")
+
+    df["year"] = df["quarter_code"].str[:4].astype(int)
+    df["month"] = (
+        df["quarter_code"].str[4:6].astype(int).apply(lambda x: quarter_mapping[x - 1])
+    )
+
+    df["date"] = df.apply(
+        lambda row: datetime(row["year"], row["month"], 1) + pd.offsets.MonthEnd(0),
+        axis=1,
+    )
+    df = df.drop(columns=["year", "month", "quarter_code"], errors="ignore")
     df = df[["date"] + [x for x in df.columns if x != "date"]]
     return df
 
@@ -77,4 +99,4 @@ def normalize_column_name(column_name):
     column_name = unidecode(column_name.lower())
     column_name = column_name.replace(" ", "_")
     column_name = "".join(c if c.isalnum() or c == "_" else "" for c in column_name)
-    return column_name
+    return column_name.replace("__", "_")
