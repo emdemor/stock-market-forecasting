@@ -64,7 +64,9 @@ def format_sidra_result(
     data = data_raw.iloc[1:]
     data.columns = data_raw.iloc[0]
 
-    data[value_column] = data[value_column].apply(lambda x: _to_number(x))
+    data = data.assign(
+        **{value_column: data[value_column].apply(lambda x: _to_number(x))}
+    )
 
     if columns_mapping:
         data = data[columns_mapping.keys()]
