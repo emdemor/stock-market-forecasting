@@ -6,6 +6,9 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 
 RUN apt update && apt-get install pciutils -y
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 libgl1  -y
+RUN pip install jupyter
+RUN pip install ipywidgets
+RUN pip install jupyter_contrib_nbextensions
 
 COPY ./src ./src
 COPY ./notebooks ./notebooks
@@ -20,3 +23,5 @@ EXPOSE 8888
 VOLUME /app
 
 CMD ["jupyter", "lab", "--ip=*", "--port=8888", "--no-browser", "--notebook-dir=/app/notebooks", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''", "--NotebookApp.default_url='/lab/tree'"]
+
+
