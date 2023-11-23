@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 name = "stock_prediction"
 description = "Prediction of stock market"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 license = {file = "LICENSE.txt"}
 keywords = ["sample", "setuptools", "development"]
 authors = [
