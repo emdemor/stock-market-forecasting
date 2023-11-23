@@ -1,8 +1,11 @@
-FROM jupyter/minimal-notebook
+FROM pytorch/pytorch:2.0.0-cuda11.7-cudnn8-devel
 
 WORKDIR /app
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
+
+RUN apt update && apt-get install pciutils -y
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 libgl1  -y
 
 COPY ./src ./src
 COPY ./notebooks ./notebooks
@@ -10,14 +13,10 @@ COPY ./README.md ./
 COPY ./LICENSE.txt ./
 COPY ./pyproject.toml ./
 
-USER root
-RUN chown -R jovyan:users /app
-USER jovyan
-
 RUN pip install .
 
 EXPOSE 8888
 
 VOLUME /app
 
-CMD ["start-notebook.sh", "--NotebookApp.token=''", "--NotebookApp.password=''", "--NotebookApp.default_url='/lab/tree'", "--notebook-dir=/app/notebooks"]
+CMD ["jupyter", "lab", "--ip=*", "--port=8888", "--no-browser", "--notebook-dir=/app/notebooks", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''", "--NotebookApp.default_url='/lab/tree'"]
